@@ -1,0 +1,11 @@
+<root>
+ <spec>mCRL2_formulae_spec.mcrl2</spec>
+ <properties>
+  <property>WFA</property>
+  <property>SFA</property>
+  <property>FRA</property>
+  <property>WFT</property>
+  <property>SFT</property>
+  <property>FRT</property>
+ </properties>
+</root>

@@ -1,0 +1,8 @@
+!(<l(D(1)). l(D(2))>nu X. (
+	forall a:Label. (<l(a)>true => (
+		mu Y. (
+		       <l(D(3))>true 
+			|| ([l(a)]false && X)
+			|| <l(a) && !(l(D(4)) || l(D(5)))>X
+			|| <!(l(a) || l(D(4)) || l(D(5)))>Y
+)))))

@@ -1,0 +1,10 @@
+!(<l(D(1)).l(D(2))>nu X. (
+	forall i: Nat. (val(i < N) && <true*.l(order(i))>true => (
+		mu Y. (
+				<l(D(3))>true
+			|| ([true*.l(order(i))]false && X)
+			|| <l(order(i)) && !(l(D(4)) || l(D(5)))>X
+			|| <!(l(order(i)) || l(D(4)) || l(D(5)))>Y
+		)
+	))
+))

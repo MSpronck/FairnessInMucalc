@@ -1,0 +1,18 @@
+!(<l(D(1)).l(D(2))>nu X. (
+		(forall t: Nat. (val(t < T) =>
+		((exists a: Nat. (val(a < N && order(a) in task(t))
+		&& <true*.l(order(a))>true)) => (
+			mu Y. (
+					<l(D(3))>true
+				|| ((forall a: Nat. (val(a < N && order(a) in task(t)) =>
+						[true*.l(order(a))]false)) && X)
+				|| (exists a: Nat. (val(a < N && order(a) in task(t)) &&
+						<l(order(a)) && !(l(D(4)) || l(D(5)))>X))
+				|| (exists a: Nat. (val(a < N && !(order(a) in task(t))) &&
+						<l(order(a)) && !(l(D(4)) || l(D(5)))>Y))
+			)
+		))))
+	&& ((forall a: Nat. (val(a < N && order(a) in C) => [true*.l(order(a))]false)) => (
+		[true]false || <l(D(3))>true || <!(l(D(4)) || l(D(5)))>X))
+))
+			

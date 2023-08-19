@@ -1,0 +1,35 @@
+% This model just exists to have actions d1 - d5, which we can use as placeholders in the formulae.
+% For demonstration purposes, we use l(D(i)) to represent delta_i'.  However, as described in 6.2, depending on how the variables are filled in this may be different. true*.q would for example become true*.l(q').
+
+sort
+	Label = struct D(id: Nat);
+
+act
+	d: Nat;
+	l: Label;
+
+map
+	order: Nat -> Label;
+	N: Nat;
+	task: Nat -> Set(Label);
+	T: Nat;
+	C: Set(Label);
+
+eqn
+	order(0) = D(1);
+	order(1) = D(2);
+	order(2) = D(3);
+	order(3) = D(4);
+	order(4) = D(5);
+	N = 5;
+	task(0) = {D(1)};
+	T = 1;
+	C = {D(1)};
+
+proc
+	Example = d(1)|l(D(1)).Example;
+
+init
+	hide({d},
+	allow({d|l},
+	Example));

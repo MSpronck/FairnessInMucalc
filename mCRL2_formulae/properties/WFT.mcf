@@ -1,0 +1,16 @@
+!(<l(D(1)).l(D(2))>nu X. (
+		(forall t: Nat. (val(t < T) =>
+		((exists a: Label. (val(a in task(t)) && <l(a)>true)) =>
+			(mu Y. (
+					<l(D(3))>true
+				|| ((forall a: Label. (val(a in task(t)) =>
+						[l(a)]false)) && X)
+				|| (exists a: Label. (val(a in task(t)) &&
+						<l(a) && !(l(D(4)) || l(D(5)))>X))
+				|| (exists a: Label. (val(!(a in task(t))) &&
+						<l(a) && !(l(D(4)) || l(D(5)))>Y))
+			)))))
+	&& ((forall a: Label. (val(a in C) => [l(a)]false)) => (
+			[true]false || <l(D(3))>true || <!(l(D(4)) || l(D(5)))>X
+		))
+)) 

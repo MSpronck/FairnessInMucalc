@@ -1,0 +1,24 @@
+forall F: List(Bool). (val(#F == T) => (
+	!(<l(D(1)).l(D(2))>mu Y. (
+			<!(l(D(4)) || l(D(5)))>Y
+		|| <l(D(3))>true
+		|| [true]false
+		|| nu X. (mu W(num: Nat = 0). (
+				(val(num == T) => (
+						(forall t: Nat. (val(t < T && !(F.t)) =>
+							(forall a: Label. (val(a in task(t)) =>
+								[l(a)]false)))) 
+					&& <!(l(D(4)) || l(D(5)))>X))
+			&& (val(num < T && F.num) => (
+						(forall t: Nat. (val(t < T && !(F.t)) =>
+							(forall a: Label. (val(a in task(t)) =>
+								[l(a)]false))))
+					&& (
+							<!(l(D(4)) || l(D(5)))>W(num)
+						|| (exists a: Label. (val(a in task(num))
+							&& <l(a) && !(l(D(4)) || l(D(5)))>W(num + 1))))
+				))
+			&& (val(num < T && !(F.num)) => W(num + 1))
+		))
+	))
+))

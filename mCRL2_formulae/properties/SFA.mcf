@@ -1,0 +1,21 @@
+forall F: List(Bool). (val(#F == N) => (
+	!(<l(D(1)).l(D(2))>mu Y. (
+		   <!(l(D(4)) || l(D(5)))>Y
+		|| <l(D(3))>true 
+		|| nu X. (mu W(num: Nat = 0). (
+			   (val(num == N) => (
+					(forall i: Nat. (val(i < N && !(F.i)) =>
+						[l(order(i))]false))
+				  && X))
+			&& (val(num < N && F.num) => (
+				    (forall i: Nat. (val(i < N && !(F.i)) =>
+						[l(order(i))]false))
+				&& (
+					   <!(l(D(4)) || l(D(5)))>W(num)
+					|| <l(order(num)) && !(l(D(4)) || l(D(5)))>W(num + 1))))
+			&& (val(num < N && !(F.num)) => (
+				W(num + 1)))
+		))
+	))
+))
+			
