@@ -1,0 +1,32 @@
+sort
+	Label = struct Throw | Return | Catch;
+
+act
+	throw_s, throw_r, throw;
+	return_s, return_r, return;
+	catch;
+	l : Label;
+
+map
+	order: Nat -> Label;
+	N: Nat;
+eqn
+	order(0) = Throw;
+	order(1) = Return;
+	order(2) = Catch;
+	N = 3;
+
+proc
+	Person = throw_s|l(Throw) . return_r . Person;
+	Dog = throw_r . catch|l(Catch) . return_s|l(Return) . Dog;
+
+init
+	hide({
+		throw, return, catch},
+	allow({
+		throw|l, return|l, catch|l},
+	comm({
+		throw_s | throw_r -> throw,
+		return_s | return_r -> return},
+	Person || Dog )));
+	

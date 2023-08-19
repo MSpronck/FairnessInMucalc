@@ -1,0 +1,17 @@
+act
+	throw_s, throw_r, throw;
+	return_s, return_r, return;
+	catch;
+
+proc
+	Person = throw_s . return_r . Person;
+	Dog = throw_r . catch . return_s . Dog;
+
+init
+	allow({
+		throw, return, catch},
+	comm({
+		throw_s | throw_r -> throw,
+		return_s | return_r -> return},
+	Person || Dog ));
+	
