@@ -5,7 +5,7 @@ act
 	throw_s, throw_r, throw;
 	return_s, return_r, return;
 	catch;
-	l : Label;
+	l: Label;
 
 proc
 	Person = throw_s|l(Throw) . return_r . Person;

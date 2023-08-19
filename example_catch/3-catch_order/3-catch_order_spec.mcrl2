@@ -5,7 +5,7 @@ act
 	throw_s, throw_r, throw;
 	return_s, return_r, return;
 	catch;
-	l : Label;
+	l: Label;
 
 map
 	order: Nat -> Label;

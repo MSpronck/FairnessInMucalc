@@ -5,14 +5,14 @@ act
 	throw_s, throw_r, throw;
 	return_s, return_r, return;
 	catch;
-	l : Label;
+	l: Label;
 
 map
-	order : Nat -> Label;
-	N : Nat;
-	task : Nat -> Set(Label);
-	T : Nat;
-	C : Set(Label);
+	order: Nat -> Label;
+	N: Nat;
+	task: Nat -> Set(Label);
+	T: Nat;
+	C: Set(Label);
 eqn
 	order(0) = Throw;
 	order(1) = Return;
