@@ -1,0 +1,7 @@
+forall i: Nat. (val(i < 2) => (
+	!(<true*.l(Noncrit(i))>nu X.(forall j: Nat. (val(j < N) && <true*.l(order(j))>true => (
+		mu Y.(
+		      ([true*.l(order(j))]false && X) 
+		  ||  <l(order(j)) && !(l(Crit(i)))>X 
+		  ||  <!(l(order(j)) || l(Crit(i)))>Y
+)))))))  

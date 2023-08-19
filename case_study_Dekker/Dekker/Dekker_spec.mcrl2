@@ -1,0 +1,103 @@
+sort
+	% Labels, this data type means the Label set is infinite
+	Label = struct Crit(id: Nat) | Noncrit(id: Nat) |
+				   GetFlag(id: Nat, owner: Nat, value: Bool) | SetFlag(id: Nat, owner: Nat, value: Bool) |
+				   GetTurn(id: Nat, value: Nat) | SetTurn(id: Nat, value: Nat);
+	% Components, also infinite
+	Component = struct Comp(id: Nat);
+
+% We added a parameter to every action representing which process is responsible for it
+act crit, noncrit: Nat;
+    get_flag_r, get_flag_s, get_flag,
+      set_flag_r, set_flag_s, set_flag: Nat # Nat # Bool;
+    get_turn_r, get_turn_s, get_turn,
+      set_turn_r,set_turn_s,set_turn: Nat # Nat;
+	% We added the action l to the existing model
+	l: Label;
+
+map
+	order: Nat -> Label;
+	N: Nat;
+	task: Nat -> Set(Label);
+	T: Nat;
+	C: Set(Label);
+eqn
+	order(0) = Crit(0);
+	order(1) = Crit(1);
+	order(2) = Noncrit(0);
+	order(3) = Noncrit(1);
+	order(4) = SetFlag(0, 0, true);
+	order(5) = SetFlag(1, 1, true);
+	order(6) = GetFlag(0, 1, false);
+	order(7) = GetFlag(1, 0, false);
+	order(8) = SetTurn(0, 1);
+	order(9) = SetTurn(1, 0);
+	order(10) = GetFlag(1, 0, true);
+	order(11) = GetFlag(0, 1, true);
+	order(12) = GetTurn(1, 0);
+	order(13) = GetTurn(0, 0);
+	order(14) = SetFlag(0, 0, false);
+	order(15) = SetFlag(1, 1, false);
+	order(16) = GetTurn(1, 1);
+	order(17) = GetTurn(0, 1);
+	N = 18;
+
+	task(0) = {Crit(0), Noncrit(0), SetFlag(0, 0, true), GetFlag(0, 1, false), SetTurn(0, 1), GetFlag(0, 1, true), GetTurn(0, 0), SetFlag(0, 0, false), GetTurn(0, 1)};
+	task(1) = {Crit(1), Noncrit(1), SetFlag(1, 1, true), GetFlag(1, 0, false), SetTurn(1, 0), GetFlag(1, 0, true), GetTurn(1, 1), SetFlag(1, 1, false), GetTurn(1, 0)};
+	T = 2; 
+
+	% In this example, F is the whole set of actions that appears in the LTS so we can also leave that part of the formulae out, since [F]ff always implies [true]ff. 
+	% For illustration purposes, we keep it.
+	%F = {l: Label | exists n: Nat. (n < N && l in task(n))};
+	% We find that making sets explicit, rather than implicitly defining them as done above, makes verification a bit faster,
+	C = {Crit(0), Noncrit(0), SetFlag(0, 0, true), GetFlag(0, 1, false), SetTurn(0, 1), GetFlag(0, 1, true), GetTurn(0, 0), SetFlag(0, 0, false), GetTurn(0, 1), Crit(1), Noncrit(1), SetFlag(1, 1, true), GetFlag(1, 0, false), SetTurn(1, 0), GetFlag(1, 0, true), GetTurn(1, 1), SetFlag(1, 1, false), GetTurn(1, 0)}; 
+
+
+map other: Nat -> Nat;
+eqn other(0) = 1;
+    other(1) = 0;
+
+proc
+  % Shared variables flag (array).
+  Flag(i: Nat, b: Bool)=
+	sum j: Nat. (j <= 1) -> (
+    sum b': Bool. set_flag_r(j, i, b')|l(SetFlag(j, i, b')).Flag(i, b')
+	+ get_flag_s(j, i, b)|l(GetFlag(j, i, b)).Flag(i, b));
+
+  % Shared variable turn.
+  Turn(n:Nat)=
+	sum j: Nat. (j <= 1) -> (
+    sum n': Nat. set_turn_r(j, n')|l(SetTurn(j, n')).Turn(n')
+  + get_turn_s(j, n)|l(GetTurn(j, n)).Turn(n));
+
+  % Main process for Dekker's algorithm.
+  Dekker(i: Nat) =
+    noncrit(i)|l(Noncrit(i)). set_flag_s(i, i, true) .
+	Dekker_outer_loop(i);
+
+  Dekker_outer_loop(i: Nat) =
+      % Read shared variable flag
+	  sum flag_other: Bool . get_flag_r(i, other(i), flag_other) .
+	  flag_other -> ( sum turn: Nat . get_turn_r(i, turn) .   % Read shared variable turn
+                    (turn != i) -> (set_flag_s(i, i, false) . % flag[i] := false
+                                    get_turn_r(i, i) .        % while turn != i { /* busy wait */}
+                                    set_flag_s(i, i, true) .  % flag[i] := true
+                                    Dekker_outer_loop(i)   % loop
+                                   )
+                                <> Dekker_outer_loop(i))  % if turn == i, loop
+               <> (set_turn_s(i, other(i)) .                 % turn := other(i)
+                   crit(i)|l(Crit(i)) .
+                   set_flag_s(i, i, false) .                 % flag[i] := false
+                  Dekker(i));
+
+init
+	hide({ crit, noncrit,
+			get_flag, set_flag, get_turn, set_turn},
+    allow({ crit|l, noncrit|l, 
+            get_flag|l, set_flag|l, get_turn|l, set_turn|l},
+    comm({ get_flag_r | get_flag_s -> get_flag,
+           set_flag_r | set_flag_s -> set_flag,
+           get_turn_r | get_turn_s -> get_turn,
+           set_turn_r | set_turn_s -> set_turn },
+      Dekker(0) || Dekker(1) ||
+      Flag(0,false) || Flag(1,false) || Turn(0))));

@@ -1,0 +1,8 @@
+forall i: Nat. (val(i < 2) => (
+	!(<true*.l(Noncrit(i))>nu X.(
+		forall a:Label. (<l(a)>true => (
+			mu Y.(
+		   	  		([l(a)]false && X) 
+		  		||  <l(a) && !(l(Crit(i)))>X 
+		  		||  <!(l(a) || l(Crit(i)))>Y
+)))))))  

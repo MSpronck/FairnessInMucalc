@@ -1,0 +1,3 @@
+forall i: Nat. (val(i < 2) => (
+	!(<true*.l(Noncrit(i))>nu X. ([true]false || <!(l(Crit(i)))>X))
+))

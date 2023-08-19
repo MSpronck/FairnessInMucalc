@@ -1,0 +1,15 @@
+forall i: Nat. (val(i < 2) => (
+  forall F: List(Bool). (val(#F == T) => (
+    !(<true*.l(Noncrit(i))>mu Y.(<!l(Crit(i))>Y || [true]false || nu X.(
+    	mu W(num: Nat = 0).(
+        	(val(num == T) => (
+             	(forall t: Nat.(val(t < T && !(F.t)) => 
+                 	(forall a: Label. (val(a in task(t)) => [l(a)]false)))) && <!l(Crit(i))>X))
+         && (val(num < T && F.num) => (
+            	(forall t: Nat.(val(t < T && !(F.t)) => 
+                	(forall a: Label. (val(a in task(t)) => [l(a)]false))))
+             && (<!l(Crit(i))>W(num)
+                	|| (exists a: Label. (val(a in task(num)) && <l(a) && !l(Crit(i))>W(num+1))))))
+         && (val(num < T && !(F.num)) => (
+				W(num+1)))
+))))))))

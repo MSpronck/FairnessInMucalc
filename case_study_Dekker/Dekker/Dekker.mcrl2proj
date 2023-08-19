@@ -1,0 +1,13 @@
+<root>
+ <spec>Dekker_spec.mcrl2</spec>
+ <properties>
+  <property>no deadlock</property>
+  <property>Starvation freedom without fairness</property>
+  <property>starvation freedom WFA</property>
+  <property>starvation freedom SFA</property>
+  <property>starvation freedom FRA</property>
+  <property>Starvation freedom WFC</property>
+  <property>Starvation freedom SFC</property>
+  <property>Starvation freedom FRC</property>
+ </properties>
+</root>

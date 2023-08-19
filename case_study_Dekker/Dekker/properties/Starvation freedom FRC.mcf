@@ -1,0 +1,12 @@
+forall i: Nat. (val(i < 2) => (
+	!(<true*.l(Noncrit(i))>nu X.(
+		(forall t: Nat. (val(t < T) => ((exists a: Nat. (val(a < N && order(a) in task(t)) && <true*.l(order(a))>true)) => (
+			mu Y.(
+		      	((forall a: Nat. (val(a < N && order(a) in task(t)) => [true*.l(order(a))]false)) && X) 
+		 	 ||  (exists a: Nat. (val(a < N && order(a) in task(t)) && <l(order(a)) && !(l(Crit(i)))>X))
+		 	 ||  (exists a: Nat. (val(a < N && !(order(a) in task(t))) && <l(order(a)) && !(l(Crit(i)))>Y))
+		))))) && 
+		((forall a: Nat. (val(a < N && order(a) in C) => [true*.l(order(a))]false)) => (
+			[true]false || <!(l(Crit(i)))>X
+		))
+))))
